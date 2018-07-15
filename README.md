@@ -13,28 +13,21 @@ API documentation [here](https://documenter.getpostman.com/view/1657780/RW1ejGzL
 
 ### Installation
 
-1. Clone repository
-```
-$ git clone https://github.com/modulr/api-laravel-passport.git
+1. Install composer dependencies
+
+```bash
+composer install
 ```
 
-2. Enter folder
-```
-$ cd api-laravel
+2. Generate APP_KEY
+
+```bash
+php artisan key:generate
 ```
 
-3. Install composer dependencies
-```
-~/api-laravel$ composer install
-```
+3. Configure .env file
 
-4. Generate APP_KEY
-```
-~/api-laravel$ php artisan key:generate
-```
-
-5. Configure .env file, edit file with next command `$ nano .env`
-```
+```bash
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -43,14 +36,15 @@ DB_USERNAME=user
 DB_PASSWORD=secret
 ```
 
-6. Run migrations
-```
-~/api-laravel$ php artisan migrate
+4. Run migrations
+
+```bash
+php artisan migrate
 ```
 
-7. Create client
-```
-~/api-laravel$ php artisan passport:install
+5. Create client
+```bash
+php artisan passport:install
 ```
 
 ### Configuration
