@@ -53,9 +53,11 @@ DB_PASSWORD=secret
 ~/api-laravel$ php artisan passport:install
 ```
 
+### Configuration
+
+CORS are enabled from all hosts via the `barryvdh/laravel-cors` package. If you want to restrict access, remove the package and middleware in `Kernel.php` and implement your own solution, or edit to your liking.
 
 ### Dependencies
-
 
 - [laravolt/avatar](https://github.com/laravolt/avatar) - Generate avatars for users of application
 
