@@ -56,13 +56,13 @@ class AuthController extends Controller
             ]);
             $user->save();
     
-            try {
-                $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+            // try {
+            //     $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
                 
-                Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
-            } catch (\Exception $e) {
-                throw new \Exception('unable to create avatar');
-            }
+            //     Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
+            // } catch (\Exception $e) {
+            //     throw new \Exception('unable to create avatar');
+            // }
 
             try {
                 $myNotification = new SignupActivate($user);
