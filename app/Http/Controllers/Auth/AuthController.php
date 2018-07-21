@@ -109,10 +109,12 @@ class AuthController extends Controller
                     'message' => __('auth.token_invalid')
                 ], 400);
             }
+
+            if ($user->active) {
+                throw new \Exception('this user is already active');
+            }
     
-            $user->active = true;
-            $user->activation_token = '';
-            
+            $user->active = true;            
             $user->save();
 
             try {
