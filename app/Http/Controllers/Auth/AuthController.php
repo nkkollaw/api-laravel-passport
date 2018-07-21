@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Storage;
@@ -11,6 +12,7 @@ use Avatar;
 use App\Notifications\SignupActivate;
 use App\Notifications\SignupSuccess;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -25,29 +27,65 @@ class AuthController extends Controller
      */
     public function signup(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed'
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $user = new User([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'activation_token' => str_random(60)
-        ]);
+            try {
+                $request->validate([
+                    'name' => 'required|string',
+                    'email' => 'required|string|email',
+                    'password' => 'required|string|confirmed'
+                ]);
+            } catch (\Exception $e) {
+                throw new \Exception('required data missing');   
+            }
 
-        $user->save();
+            try {
+                $request->validate([
+                    'email' => 'unique:users',
+                ]);
+            } catch (\Exception $e) {
+                throw new \Exception('user already exists');
+            }
+    
+            $user = new User([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'activation_token' => str_random(60)
+            ]);
+            $user->save();
+    
+            try {
+                $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
+                
+                Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
+            } catch (\Exception $e) {
+                throw new \Exception('unable to create avatar');
+            }
 
-        $avatar = Avatar::create($user->name)->getImageObject()->encode('png');
-        Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar);
+            try {
+                $myNotification = new SignupActivate($user);
 
-        $user->notify(new SignupActivate($user));
+                $user->notify($myNotification);
+            } catch (\Exception $e) {
+                throw new \Exception('unable to send activation email');
+            }
 
-        return response()->json([
-            'message' => __('auth.signup_success')
-        ], 201);
+            DB::commit();
+
+            return response()->json([
+                'ok' => true,
+                'user_id' => $user->id
+            ], 201);            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return response()->json([
+                'ok' => false,
+                'error' => __($e->getMessage())
+            ], 400);
+        }
     }
 
     /**
@@ -64,7 +102,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json([
                 'message' => __('auth.token_invalid')
-            ], 404);
+            ], 400);
         }
 
         $user->active = true;
