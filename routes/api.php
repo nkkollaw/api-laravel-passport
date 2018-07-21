@@ -13,16 +13,18 @@ Route::group([
         'middleware' => 'api',
         'prefix' => 'auth'
     ], function () {
-        Route::post('login', 'AuthController@login');
-        Route::post('signup', 'AuthController@signup');
-        Route::get('signup/activate/{token}', 'AuthController@signupActivate');
+        Route::post('sessions', 'AuthController@login');
+        Route::post('users', 'AuthController@signup');
+        Route::get('activations/{token}', 'AuthController@signupActivate');
+
         Route::group([
             'middleware' => 'auth:api'
         ], function() {
-            Route::get('logout', 'AuthController@logout');
-            Route::get('user', 'AuthController@user');
+            Route::delete('sessions/current', 'AuthController@logout');
+            Route::get('sessions/current', 'AuthController@user');
         });
     });
+
     Route::group([
         'namespace' => 'Auth',
         'middleware' => 'api',
