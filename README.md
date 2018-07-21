@@ -1,6 +1,6 @@
-# Modulr API Laravel Passport
+# Foorious Laravel API
 
-API documentation [here](https://documenter.getpostman.com/view/1657780/RW1ejGzL) in postman
+~~API documentation [here](https://documenter.getpostman.com/view/1657780/RW1ejGzL) in postman~~
 
 ## Table of Contents
 
@@ -45,6 +45,11 @@ php artisan migrate
 5. Create client
 ```bash
 php artisan passport:install
+```
+
+6. Make sure we can write logs
+```
+chown -v -R www-data /var/www/storage/logs/
 ```
 
 ### Configuration
