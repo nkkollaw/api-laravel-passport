@@ -13,15 +13,19 @@ Route::group([
         'middleware' => 'api',
         'prefix' => 'auth'
     ], function () {
-        Route::post('sessions', 'AuthController@login');
+        // signup
         Route::post('users', 'AuthController@signup');
-        Route::get('activations/{token}', 'AuthController@signupActivate');
+        Route::post('activations/{token}', 'AuthController@signupActivate');
 
+        // login
+        Route::post('sessions', 'AuthController@login');
+
+        // get/logout
         Route::group([
             'middleware' => 'auth:api'
         ], function() {
-            Route::delete('sessions/current', 'AuthController@logout');
             Route::get('sessions/current', 'AuthController@user');
+            Route::delete('sessions/current', 'AuthController@logout');
         });
     });
 
