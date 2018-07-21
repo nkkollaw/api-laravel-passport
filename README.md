@@ -29,11 +29,11 @@ php artisan key:generate
 
 ```bash
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
+DB_HOST=db
 DB_PORT=3306
-DB_DATABASE=database
-DB_USERNAME=user
-DB_PASSWORD=secret
+DB_DATABASE=website
+DB_USERNAME=root
+DB_PASSWORD=root
 ```
 
 4. Run migrations
