@@ -64,19 +64,20 @@ class AuthController extends Controller
             //     throw new \Exception('unable to create avatar');
             // }
 
-            try {
-                $myNotification = new SignupActivate($user);
+            // try {
+            //     $myNotification = new SignupActivate($user);
 
-                $user->notify($myNotification);
-            } catch (\Exception $e) {
-                throw new \Exception('unable to send activation email');
-            }
+            //     $user->notify($myNotification);
+            // } catch (\Exception $e) {
+            //     throw new \Exception('unable to send activation email');
+            // }
 
             DB::commit();
 
             return response()->json([
                 'ok' => true,
-                'user_id' => $user->id
+                'id' => $user->id,
+                'code' => $user->activation_token
             ], 201);            
         } catch (\Exception $e) {
             DB::rollBack();
@@ -97,21 +98,44 @@ class AuthController extends Controller
      */
     public function signupActivate($token)
     {
-        $user = User::where('activation_token', $token)->first();
 
-        if (!$user) {
+        try {
+            DB::beginTransaction();
+
+            $user = User::where('activation_token', $token)->first();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => __('auth.token_invalid')
+                ], 400);
+            }
+    
+            $user->active = true;
+            $user->activation_token = '';
+            
+            $user->save();
+
+            try {
+                $user->notify(new SignupSuccess($user));
+            } catch (\Exception $e) {
+                throw new \Exception('unable to send confirmation email (' . $e->getMessage() . ')');
+            }
+    
+            DB::commit();
+    
             return response()->json([
-                'message' => __('auth.token_invalid')
+                'ok' => true,
+                'id' => $user->id,
+                'code' => $user->activation_token
+            ], 201);    
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return response()->json([
+                'ok' => false,
+                'error' => __($e->getMessage())
             ], 400);
         }
-
-        $user->active = true;
-        $user->activation_token = '';
-        $user->save();
-
-        $user->notify(new SignupSuccess($user));
-
-        return $user;
     }
 
     /**
