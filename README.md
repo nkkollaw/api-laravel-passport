@@ -25,7 +25,7 @@ composer install
 php artisan key:generate
 ```
 
-3. Configure .env file (NOTE: `DB_HOST` should be set to `db` for `foorious-docker-lemp`, try `localhost` or `127.0.0.1` if running on bare metal)
+3. Configure .env file (NOTE: `DB_HOST` should be set to `db` for `foorious-docker-lamp`, try `localhost` or `127.0.0.1` if running on bare metal)
 
 ```bash
 DB_CONNECTION=mysql
