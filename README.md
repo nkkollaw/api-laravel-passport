@@ -1,15 +1,7 @@
 # Foorious Laravel API
 
 ~~API documentation [here](https://documenter.getpostman.com/view/1657780/RW1ejGzL) in postman~~
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Dependencies](#dependencies)
-- [Routes](#routes)
-    - [Authentication](#authentication)
-    - [Password Reset](#password-reset)
-
+## Laravel API
 
 ### Installation
 
