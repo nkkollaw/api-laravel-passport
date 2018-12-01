@@ -13,7 +13,7 @@
 
 ### Installation
 
-1. Configure web server (set document root, enable htaccess, etc.)
+#### 1. Configure web server (set document root, enable htaccess, etc.)
 
 For instance, with Apache on Ubuntu, edit `/etc/apache2/apache2.conf`, and change:
 
@@ -28,12 +28,14 @@ For instance, with Apache on Ubuntu, edit `/etc/apache2/apache2.conf`, and chang
 into:
 
 ```bash
-<Directory /var/www/public/>
+<Directory /var/www/>
         Options -Indexes
         AllowOverride All
         Require all granted
 </Directory>
 ```
+
+Then, edit `/etc/apache2/sites-available/000-default.conf`, and change the document root from `/var/www/html/` to `/var/www/public/` (or `/var/www/html/public/`, or wherever you dir is).
 
 Then, run:
 
@@ -41,19 +43,23 @@ Then, run:
 service apache2 restart
 ```
 
-2. Install composer dependencies
+#### 2. Install composer dependencies
+
+Navigate into the document root, then run:
 
 ```bash
 composer install
 ```
 
-3. Generate APP_KEY
+#### 3. Generate APP_KEY
 
 ```bash
 php artisan key:generate
 ```
 
-4. Configure .env file (NOTE: `DB_HOST` should be set to `my_database` for `foorious-docker-lamp`, try `localhost` or `127.0.0.1` if running on bare metal)
+#### 4. Configure .env file
+
+NOTE: `DB_HOST` should be set to `my_database` for `foorious-docker-lamp`, try `localhost` or `127.0.0.1` if running on bare metal)
 
 ```bash
 DB_CONNECTION=mysql
@@ -64,18 +70,18 @@ DB_USERNAME=username
 DB_PASSWORD=password
 ```
 
-5. Run migrations
+#### 5. Run migrations
 
 ```bash
 php artisan migrate
 ```
 
-6. Create client
+#### 6. Create client
 ```bash
 php artisan passport:install
 ```
 
-7. Make sure we can write logs
+#### 7. Make sure we can write logs
 ```
 chown -v -R www-data /var/www/storage/logs/
 ```
