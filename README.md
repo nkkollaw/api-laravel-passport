@@ -50,14 +50,7 @@ Navigate into the document root, then run:
 ```bash
 composer install
 ```
-
-#### 3. Generate APP_KEY
-
-```bash
-php artisan key:generate
-```
-
-#### 4. Configure .env file
+#### 3. Configure .env file
 
 NOTE: `DB_HOST` should be set to `my_database` for `foorious-docker-lamp`, try `localhost` or `127.0.0.1` if running on bare metal)
 
@@ -68,6 +61,12 @@ DB_PORT=3306
 DB_DATABASE=my_database
 DB_USERNAME=username
 DB_PASSWORD=password
+```
+
+#### 4. Generate APP_KEY
+
+```bash
+php artisan key:generate
 ```
 
 #### 5. Run migrations
