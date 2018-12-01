@@ -80,9 +80,12 @@ php artisan migrate
 php artisan passport:install
 ```
 
-#### 7. Make sure we can write logs
+#### 7. Make sure we can write to filesystem
+
+NOTE: set `/var/www/html/` to wherever your files are
+
 ```
-chown -v -R www-data /var/www/storage/logs/
+chown -v -R www-data /var/www/html/storage/
 ```
 
 ### Configuration
