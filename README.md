@@ -37,7 +37,7 @@ service apache2 restart
 
 #### 2. Install composer dependencies
 
-Navigate into the document root, then run:
+Navigate into the main folder, then run:
 
 ```bash
 composer install
