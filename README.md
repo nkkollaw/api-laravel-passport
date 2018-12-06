@@ -84,6 +84,10 @@ chown -v -R www-data /var/www/html/storage/
 
 CORS are enabled from all hosts via the `barryvdh/laravel-cors` package. If you want to restrict access, remove the package and middleware in `Kernel.php` and implement your own solution, or edit to your liking.
 
+#### IMPORTANT: throttle
+
+Laravel includes throttling, which is probably fine for a website but destructive for APIs, since it can make requests fail. Must be adjusted in `src/app/Http/Kernel.php`, by default is 60, you can put it to 500 or even 5000 if you don't care.
+
 ### Dependencies
 
 - [laravolt/avatar](https://github.com/laravolt/avatar) - Generate avatars for users of application
