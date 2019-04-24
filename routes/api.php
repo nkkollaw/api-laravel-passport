@@ -9,7 +9,7 @@ Route::group([
       Auth
     --------------------------------------------------------------------------*/
     Route::group([
-        'namespace' => 'Auth',
+        'namespace' => 'Library\Auth',
         'middleware' => 'api',
         'prefix' => 'auth'
     ], function () {
